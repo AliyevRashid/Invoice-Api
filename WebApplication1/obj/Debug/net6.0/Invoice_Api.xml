@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Invoice_Api</name>
+    </assembly>
+    <members>
+        <member name="M:Invoice_Api.Controllers.AuthController.Register(Invoice_Api.DTO.ReqisterRequest)">
+            <summary>
+            Register
+            </summary>
+            <param name="Register"></param>
+            <returns>AuthTokem(AccessToken and RefreshToken)</returns>
+        </member>
+        <member name="M:Invoice_Api.Controllers.AuthController.Login(Invoice_Api.DTO.LoginRequest)">
+            <summary>
+            Login
+            </summary>
+            <param name="request"></param>
+            <returns>AuthTokem(AccessToken and RefreshToken)</returns>
+        </member>
+        <member name="M:Invoice_Api.Controllers.AuthController.Update_User(System.Int32,System.String,System.String)">
+            <summary>
+            Only Admin Can Update User
+            </summary>
+            <param name="id"></param>
+            <param name="user"></param>
+            <returns>Updated User</returns>
+        </member>
+        <member name="M:Invoice_Api.Controllers.InvoiceController.PostInvoice(Invoice_Api.DTO.InvoiceRow_Request)">
+            <summary>
+            Create new Invoice
+            </summary>
+            <param name="request"></param>
+            <returns>Created Invoice</returns>
+        </member>
+        <member name="M:Invoice_Api.Controllers.InvoiceController.Post_Customer(Invoice_Api.Models.Humans.Customer)">
+            <summary>
+            Create new Customer
+            </summary>
+            <param name="customer"></param>
+            <returns>Created Customer</returns>
+        </member>
+        <member name="M:Invoice_Api.Controllers.InvoiceController.GetCustomer_By_Id(System.Int32)">
+            <summary>
+            Return customer by Id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Invoice_Api.Controllers.InvoiceController.GetCustomers(System.String)">
+            <summary>
+            return of all customers of the selected user
+            </summary>
+            <param name="email"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Invoice_Api.Controllers.InvoiceController.DeleteCustomer(System.String,System.String)">
+            <summary>
+            Delete Customer by Id
+            </summary>
+            <param name="userEmail"></param>
+            <param name="email"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Invoice_Api.DTO.Pagination.PaginationRequest.Page">
+            <summary>
+            Page number
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:Invoice_Api.DTO.Pagination.PaginationRequest.PageSize">
+            <summary>
+            Page size - How many items in one page 
+            </summary>
+            <example>10</example>
+        </member>
+    </members>
+</doc>
