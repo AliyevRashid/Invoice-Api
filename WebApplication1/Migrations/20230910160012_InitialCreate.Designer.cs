@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Invoice_Api.Migrations
 {
     [DbContext(typeof(InvoiceDbContext))]
-    [Migration("20230905152519_InitialCreate")]
+    [Migration("20230910160012_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,9 +51,8 @@ namespace Invoice_Api.Migrations
                     b.Property<DateTimeOffset>("StarDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("TotalSum")
                         .HasColumnType("decimal(18,2)");

@@ -4,7 +4,7 @@ using Invoice_Api.Models.Humans;
 using Invoice_Api.Models;
 using Invoice_Api.Services;
 using Microsoft.EntityFrameworkCore;
-
+using Invoice_Api.DTO.Pagination;
 
 namespace Invoice_Api.Services;
 
@@ -19,6 +19,7 @@ public class InvoiceService : IInvoiceService
         invoice_rowList.Add(invoice_row);
         var invoice = new Invoice() {Rows = invoice_rowList };
         invoice_row.InnvoiceId = invoice.Id;
+        invoice.Status = InvoiceStatus.Created;
 
          _context.InvoiceRow.Add(invoice_row);
         invoice =_context.Invoices.Add(invoice).Entity;
@@ -31,77 +32,44 @@ public class InvoiceService : IInvoiceService
         var invoices =  _context.Invoices.ToList();
         return Task.FromResult(invoices.Select(item => item));
     }
-    public async Task<Customer?> CreateCustomer(Human human)
+    public async Task<Invoice> Delete_Invoice(int id)
     {
-         if (human is Customer)
+        var invoice = await _context.Invoices.FindAsync(id);
+        if (invoice == null || invoice.Status == InvoiceStatus.Sent)
         {
-            var customer = new Customer()
-            { 
-                Id = human.Id,
-                UserName = human.UserName,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
-            customer = _context.Customers.Add(customer).Entity;
-            await _context.SaveChangesAsync();
-            return customer;
+            return null;
         }
-        return null;
-
-    }
-
-    public async Task<Customer> DeleteCustomer_ByEmail(string Email)
-    {
-        var deleted_customer = await _context.Customers.FindAsync(Email);
-        if (deleted_customer != null)
+       
+        var invoiceRows = _context.InvoiceRow.Where(x => x.InnvoiceId == id).ToList();
+        foreach (var item in invoiceRows)
         {
-            _context.Customers.Remove(deleted_customer);
-            _context.SaveChanges();
-            return deleted_customer;
+            item.InnvoiceId = 0;
         }
-        return null;
+
+        _context.Invoices.Remove(invoice);
+        _context.SaveChanges();
+        return invoice;
     }
    
+   
 
-    public Task<Invoice> Delete_Invoice(int id)
-    {
-        throw new NotImplementedException();
-    }
 
-    public Task<IEnumerable<Customer>> GetAllCustomers()
+    public async Task<Invoice> Update_Invoice(int id,string comment)
     {
-        var customers = _context.Customers.ToList();
-        return Task.FromResult(customers.Select(item => item));
-    }
+        var invoice = await _context.Invoices.FindAsync(id);
+        if(invoice is  null || invoice.Status == InvoiceStatus.Sent)
+        {
+           return null;
+        }
 
-    public async Task<Customer> GetCustomer_ById(int id)
-    {
-        var customer = await _context.Customers.FindAsync(id);
-        return customer is not null ?
-                       customer : null;
-    }
-    public async Task<AppUser> GetUser_ById(int id)
-    {
-        var user = await _context.Users.FindAsync(id);
-        return user is not null ?
-                       user : null;
+        invoice.Comment= comment;
+        invoice.UpdatetAt = DateTimeOffset.UtcNow;
+        _context.Update(invoice);
+        return invoice;
+
     }
 
-    public async Task<Human> Update(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Invoice> Update_Invoice(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    private AppUser CovnvertToUser(Human human)
-    {
-        var user = new AppUser() { Id = human.Id, UserName = human.UserName };
-        return user;
-    }
+    
 
     private InvoiceRow CreateInvoiceRow(InvoiceRow_Request request)
     {

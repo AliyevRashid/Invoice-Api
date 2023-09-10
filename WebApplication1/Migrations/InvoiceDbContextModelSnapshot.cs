@@ -49,9 +49,8 @@ namespace Invoice_Api.Migrations
                     b.Property<DateTimeOffset>("StarDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("TotalSum")
                         .HasColumnType("decimal(18,2)");

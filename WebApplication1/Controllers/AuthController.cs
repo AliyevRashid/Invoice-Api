@@ -71,7 +71,7 @@ namespace Invoice_Api.Controllers
             var created_user = await _userManager.FindByEmailAsync(request.Email);
             if (created_user is  null)
             {
-                return Conflict("AppUser not found");
+                return Conflict("User not found");
             }
             var canSignIn = await _signInManager.CheckPasswordSignInAsync(created_user, request.Password, false);
             
